@@ -38,7 +38,7 @@ export default {
                 <div class="flex main-action-left">
                    <!-- <button class="nonebcc">  -->
                     <div class="flex select">
-                        <img @click="removeSelected" class="main-action cursor-pointer select"  src="../../assets/img/actions-main-cmp/check_box_outline_blank_white_20dp.png"/>
+                        <img @click="removeSelected" class="main-action cursor-pointer select" :class="deleteMainStyle"  src="../../assets/img/delete_white_20dp.png"/>
                         <img  @click="print" class="main-action cursor-pointer" src="../../assets/img/actions-main-cmp/arrow_drop_down_white_20dp.png"/>
                     </div>
                     <div class="flex ref-more-act">
@@ -111,6 +111,7 @@ export default {
             mails: null,
             // selectedMail: null,
             filterBy: {},
+            mark: false
         }
     },
     created() {
@@ -120,7 +121,7 @@ export default {
         load() {
             mailService.query()
                 .then(mails => {
-                    console.log('load');
+                    // console.log('load');
                     // console.log(mails)
                     this.mails = mails
                 })
@@ -148,74 +149,26 @@ export default {
             this.mails.push(mail)
         },
         filter(filterBy) {
-            console.log(filterBy);
+            console.log(filterBy)
             this.filterBy = filterBy
         },
         changeUrlImgeIndicate() {
             this.load()
         },
         removeSelected() {
-
             mailService.query()
                 .then(mails => {
-                    mails.filter(mail => !mail.isSelected)
-                    console.log(mails)
-                    return mails
+                    var m = mails.filter(mail => !mail.isSelected)
+                    return m
                 })
-                .then(updatedMails =>{
-                    
-                //     utilService.saveToStorage('mails', updatedMails)
-                // this.load
+                .then((m) => {
+                    localStorage.setItem('mails', JSON.stringify(m))
+                    console.log(m)
+                    this.load()
+                    // this.mark = !this.mark
+                    return Promise.resolve()
+
                 })
-            // mails => mails.forEach(mail => {
-            // storageService.q
-
-            // console.log(mail)
-            // storageService.remove('mails', mail.id) 
-            // if (mail.isSelected) this.removeMail(mail.id)
-            // }))
-
-
-            // mailService.query()
-            //     .then(mails => {
-            //         var mails = mails.filter(mail => mail.isSelected)
-            //         console.log(mails, 'pppp')
-            //         return Promise.resolve(mails)
-
-
-            //         // console.log('mails', mails)
-            //         // return mails
-            //     })
-            //     .then(mails => mails.forEach(mail => {
-            //         // var mails = 
-            //         console.log(mail)
-            //         if (mail.isSelected) this.removeMail(mail.id)
-
-            //     }))
-
-
-            // .then(mails => mails.forEach(mail => {
-            // console.log(mail)
-            // storageService.remove('mails', mail.id) 
-            // if (mail.isSelected) this.removeMail(mail.id)
-            // }))
-
-
-
-
-
-
-            // var selectedMails = this.mails.filter(mail => mail.isSelected)
-
-            // selectedMails.forEach(mail => {
-            //     console.log(mail);
-            //     storageService.remove('mails', mail.id)
-            // });
-
-            // mailService.query()
-            // .then(mails => { })
-            // selectedMails.forEach(mail=>)
-            // console.log('selectedMails', selectedMails)
         }
     },
     computed: {
@@ -236,7 +189,11 @@ export default {
             }
             return mails
 
+        },
+        deleteMainStyle() {
+            return { mark: this.mark }
         }
+
     },
     components: {
         mailFilter,

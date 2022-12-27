@@ -71,13 +71,13 @@ export default {
             this.compose = !this.compose
         },
         calculateInfo(key) {
-            console.log(key);
+            // console.log(key);
             var counter = 0
             if (this.mails) {
                 this.mails.forEach(mail => {
                     if (mail[key]) counter++
                 })
-                console.log(counter, 'counter');
+                // console.log(counter, 'counter');
                 return counter
             }
 

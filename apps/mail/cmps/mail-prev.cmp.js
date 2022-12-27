@@ -76,7 +76,7 @@ export default {
             this.$emit('changeUrlImgeIndicate')
         },
         submit() {
-            console.log('submit')
+            // console.log('submit')
         },
         mailSelect(mailId) {
             // console.log(mail)
@@ -85,7 +85,7 @@ export default {
 
             mailService.get(mailId)
                 .then(mail => {
-                    
+
                     mail.isSelected = !mail.isSelected
                     return mail
                 })
